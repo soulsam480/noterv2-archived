@@ -10,7 +10,8 @@ import {
 import type { PropType } from 'vue';
 import { allowedTags } from '../utils/constants';
 import { matchSorter } from '../utils';
-const props = defineProps({
+import type { MenuItem } from '../types';
+defineProps({
   position: {
     type: Object as PropType<{ left?: number; top?: number }>,
     required: true,
@@ -19,19 +20,20 @@ const props = defineProps({
 const emit = defineEmit(['transform-block', 'close-menu']);
 const selected = ref(0);
 const command = ref('');
-const filteredMenu = ref<typeof allowedTags>([]);
-const isSelected = computed(() => allowedTags[selected.value]);
+const filteredMenu = ref([...allowedTags]);
+const isSelected = computed((): MenuItem => filteredMenu.value[selected.value]);
 document.addEventListener('keydown', keyHandlers);
 onBeforeUnmount(() => document.removeEventListener('keydown', keyHandlers));
 watch(
   () => command.value,
   (val, oldVal) => {
     if (val !== oldVal) {
-      console.log(val);
-
-      const items = matchSorter(allowedTags, command.value, 'tag');
+      const items = matchSorter(
+        allowedTags,
+        command.value.split('/')[1],
+        'label',
+      );
       filteredMenu.value = [...items];
-      console.log(filteredMenu.value);
     }
   },
 );
@@ -43,7 +45,7 @@ function keyHandlers(e: KeyboardEvent) {
       emit('close-menu');
       break;
     case 'Backspace':
-      if (!command.value) emit('close-menu');
+      if (command.value.length === 1) emit('close-menu');
       command.value = command.value.substring(0, command.value.length - 1);
       break;
     case 'ArrowUp':
@@ -81,12 +83,18 @@ function handleClick(tag: string) {
   >
     <button
       class="hover:bg-green-100 p-2 block w-full text-left"
-      v-for="Tag in allowedTags"
+      v-for="Tag in filteredMenu"
       :key="Tag.id"
       @click="handleClick(Tag.tag)"
       :class="{ 'bg-green-100': isSelected.id === Tag.id }"
     >
       {{ Tag.label }}
+    </button>
+    <button
+      class="hover:bg-green-100 p-2 block w-full text-left"
+      v-if="filteredMenu.length === 0"
+    >
+      Nothing found
     </button>
   </div>
 </template>

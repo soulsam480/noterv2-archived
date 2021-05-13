@@ -38,6 +38,7 @@ const emit = defineEmit([
 const element = ref<HTMLElement | null>(null);
 const position = ref<{ left?: number; top?: number }>({ left: 20, top: 10 });
 const isSelect = ref(false);
+const previousKey = ref('');
 function currentContent(): string {
   if (!element.value) return '';
   return props.noHTML
@@ -77,11 +78,12 @@ function onKeypress(event: KeyboardEvent) {
     getPostion();
     isSelect.value = true;
     nextTick(() => document.getElementById('select-menu')?.focus());
-  } else if (event.key == 'Enter' && props.noNL && !isSelect.value) {
-    event.preventDefault();
-    emit('add-block');
+  } else if (event.key == 'Enter' && !isSelect.value) {
+    if (previousKey.value !== 'Shift') {
+      event.preventDefault();
+      emit('add-block');
+    }
   } else if (event.key == 'Backspace') {
-    if (isSelect.value) isSelect.value = false;
     if (currentContent().length === 0) {
       event.preventDefault();
       emit('delete-block', element);
@@ -91,6 +93,7 @@ function onKeypress(event: KeyboardEvent) {
   } else if (event.key === 'ArrowDown') {
     emit('arrowdown', element);
   }
+  previousKey.value = event.key;
 }
 onMounted(() => {
   updateContent(props.modelValue ?? '');

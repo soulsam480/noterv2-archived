@@ -3,3 +3,8 @@ export type Block = {
   id: string;
   tag: string;
 };
+export type MenuItem = {
+  tag: string;
+  label: string;
+  id: string;
+};

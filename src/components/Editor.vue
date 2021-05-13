@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { nextTick, ref } from 'vue';
-import type { Ref } from 'vue';
+import { nextTick, ref, watchEffect } from 'vue';
 import { v4 as uuid } from 'uuid';
 import type { Block as BlockModel } from '../types';
 import { setCaretToEnd } from '../utils/index';
 import Block from './Block.vue';
 const blocks = ref<BlockModel[]>([
   {
-    cntent: ' ',
+    cntent: '',
     id: uuid(),
     tag: 'h1',
   },
@@ -64,6 +63,15 @@ function arrowHandler(type: string, id: string) {
     );
   }
 }
+watchEffect(() => {
+  if (blocks.value.length === 0) {
+    blocks.value.push({
+      cntent: '',
+      id: uuid(),
+      tag: 'h1',
+    });
+  }
+});
 </script>
 <template>
   <div>

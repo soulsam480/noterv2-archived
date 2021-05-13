@@ -17,13 +17,6 @@ export const getCaretCoordinates = () => {
     if (rect) {
       x = rect.left;
       y = rect.top;
-    } else {
-      window.document.execCommand('insertText', false, ' ');
-      const range = selection?.getRangeAt(0).cloneRange();
-      range?.collapse(false);
-      const rect = range?.getClientRects()[0];
-      x = rect?.left;
-      y = rect?.top;
     }
   }
   return x === undefined || y === undefined ? { x: 20, y: 20 } : { x, y };
@@ -34,5 +27,5 @@ export function matchSorter<T extends Record<string, string>>(
   val: string,
   key: string,
 ): T[] {
-  return data.slice().filter((el) => el[key].toString().includes(val));
+  return data.slice().filter((el) => el[key].toLowerCase().includes(val));
 }
