@@ -22,10 +22,6 @@ export const getCaretCoordinates = () => {
   return x === undefined || y === undefined ? { x: 20, y: 20 } : { x, y };
 };
 
-export function matchSorter<T extends Record<string, string>>(
-  data: T[],
-  val: string,
-  key: string,
-): T[] {
+export function matchSorter<T extends Record<string, string>>(data: T[], val: string, key: string): T[] {
   return data.slice().filter((el) => el[key].toLowerCase().includes(val));
 }

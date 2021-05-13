@@ -41,11 +41,10 @@ const isSelect = ref(false);
 const previousKey = ref('');
 function currentContent(): string {
   if (!element.value) return '';
-  return props.noHTML
-    ? (element.value as any).innerText
-    : (element.value as any).innerHTML;
+  return props.noHTML ? (element.value as any).innerText : (element.value as any).innerHTML;
 }
 function updateContent(newcontent: string) {
+  // console.log(newcontent);
   if (props.noHTML) {
     element.value!.innerText = newcontent;
   } else {
@@ -75,6 +74,7 @@ function getPostion() {
 }
 function onKeypress(event: KeyboardEvent) {
   if (event.key === '/') {
+    if (previousKey.value === '/' && isSelect.value) return (isSelect.value = false);
     getPostion();
     isSelect.value = true;
     nextTick(() => document.getElementById('select-menu')?.focus());
@@ -84,6 +84,8 @@ function onKeypress(event: KeyboardEvent) {
       emit('add-block');
     }
   } else if (event.key == 'Backspace') {
+    if (((currentContent().length === 1 && previousKey.value === '/') || previousKey.value === '/') && isSelect.value)
+      return (isSelect.value = false);
     if (currentContent().length === 0) {
       event.preventDefault();
       emit('delete-block', element);
@@ -106,7 +108,9 @@ watch(
   () => props.tag,
   (newVal, oldVal) => {
     if (newVal !== oldVal) {
+      console.log(props.modelValue);
       nextTick(() => updateContent(props.modelValue ?? ''));
+      console.log('after tick');
     }
   },
 );

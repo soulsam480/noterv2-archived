@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  defineEmit,
-  defineProps,
-  onBeforeUnmount,
-  ref,
-  watch,
-} from 'vue';
+import { computed, defineEmit, defineProps, onBeforeUnmount, ref, watch } from 'vue';
 import type { PropType } from 'vue';
 import { allowedTags } from '../utils/constants';
 import { matchSorter } from '../utils';
@@ -46,15 +39,13 @@ function keyHandlers(e: KeyboardEvent) {
       break;
     case 'ArrowUp':
       e.preventDefault();
-      const prevSelected =
-        selected.value === 0 ? allowedTags.length - 1 : selected.value - 1;
+      const prevSelected = selected.value === 0 ? allowedTags.length - 1 : selected.value - 1;
       selected.value = prevSelected;
       break;
     case 'ArrowDown':
     case 'Tab':
       e.preventDefault();
-      const nextSelected =
-        selected.value === allowedTags.length - 1 ? 0 : selected.value + 1;
+      const nextSelected = selected.value === allowedTags.length - 1 ? 0 : selected.value + 1;
       selected.value = nextSelected;
       break;
     case 'Escape':
@@ -75,8 +66,8 @@ function handleClick(tag: string) {
 <template>
   <div
     class="w-50 max-h-50 overflow-auto bg-green-50 rounded-lg p-1 absolute"
-    :style="{ top: `${position.top}px`, left: `${position.left}px` }"
     id="select-menu"
+    :style="{ top: `${position.top}px`, left: `${position.left}px` }"
   >
     <button
       class="hover:bg-green-100 p-2 block w-full text-left"
@@ -85,14 +76,7 @@ function handleClick(tag: string) {
       @click="handleClick(Tag.tag)"
       :class="{ 'bg-green-100': isSelected.id === Tag.id }"
     >
-      {{ Tag.label }}
-    </button>
-    <button
-      class="hover:bg-green-100 p-2 block w-full text-left"
-      v-if="filteredMenu.length === 0"
-    >
-      Nothing found
-    </button>
+      {{ Tag.label }}</button
+    ><span class="hover:bg-green-100 p-2 block w-full text-left" v-if="filteredMenu.length === 0"> Nothing found </span>
   </div>
 </template>
-<style lang="scss" scoped></style>

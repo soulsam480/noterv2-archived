@@ -42,25 +42,17 @@ function deleteBlock(bid: string) {
   const removedBlock = [...blocks.value.filter((el) => el.id !== bid)];
   blocks.value = [...removedBlock];
   nextTick(() => {
-    setCaretToEnd(
-      document.getElementById(
-        blocks.value[blocks.value.length - 1].id,
-      ) as HTMLElement,
-    );
+    setCaretToEnd(document.getElementById(blocks.value[blocks.value.length - 1].id) as HTMLElement);
   });
 }
 function arrowHandler(type: string, id: string) {
   const index = blocks.value.map((el) => el.id).indexOf(id);
   if (type === 'up') {
     if (!blocks.value[index - 1]) return;
-    setCaretToEnd(
-      document.getElementById(blocks.value[index - 1].id) as HTMLElement,
-    );
+    setCaretToEnd(document.getElementById(blocks.value[index - 1].id) as HTMLElement);
   } else {
     if (!blocks.value[index + 1]) return;
-    setCaretToEnd(
-      document.getElementById(blocks.value[index + 1].id) as HTMLElement,
-    );
+    setCaretToEnd(document.getElementById(blocks.value[index + 1].id) as HTMLElement);
   }
 }
 watchEffect(() => {
