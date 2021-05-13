@@ -21,9 +21,4 @@ export const allowedTags: MenuItem[] = [
     tag: 'p',
     label: 'Paragraph',
   },
-  {
-    id: 'unorderdlist',
-    tag: 'ul',
-    label: 'Unordered list',
-  },
 ];

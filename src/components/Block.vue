@@ -89,8 +89,12 @@ function onKeypress(event: KeyboardEvent) {
       emit('delete-block', element);
     }
   } else if (event.key === 'ArrowUp') {
+    if (isSelect.value) return;
+    event.preventDefault();
     emit('arrowup', element);
   } else if (event.key === 'ArrowDown') {
+    if (isSelect.value) return;
+    event.preventDefault();
     emit('arrowdown', element);
   }
   previousKey.value = event.key;
@@ -134,6 +138,7 @@ watch(
     ref="element"
     class="n-block bg-gray-50 focus:bg-gray-100 hover:bg-gray-100 rounded"
     v-bind="$attrs"
+    data-ph="Type / to see commands"
   >
   </component>
 </template>

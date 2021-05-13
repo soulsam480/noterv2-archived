@@ -18,3 +18,10 @@ p {
   margin-top: 1px !important;
   margin-bottom: 1px !important;
 }
+[contentEditable='true']:empty:not(:focus):before {
+  content: attr(data-ph);
+  color: grey;
+  font-style: italic;
+  font-size: 15px;
+  font-weight: normal !important;
+}

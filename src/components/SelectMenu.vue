@@ -28,11 +28,7 @@ watch(
   () => command.value,
   (val, oldVal) => {
     if (val !== oldVal) {
-      const items = matchSorter(
-        allowedTags,
-        command.value.split('/')[1],
-        'label',
-      );
+      const items = matchSorter(allowedTags, command.value, 'label');
       filteredMenu.value = [...items];
     }
   },
@@ -66,6 +62,7 @@ function keyHandlers(e: KeyboardEvent) {
       emit('close-menu');
       break;
     default:
+      if (!e.code.match(/Key([A-Z])/)) break;
       command.value = command.value + e.key;
       break;
   }
